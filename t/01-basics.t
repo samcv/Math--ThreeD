@@ -22,4 +22,14 @@ ok (length(Vec3.new(5.0, 4.0, 2.0)) - 45.sqrt) < 1e-10, "length works";
 is-approx Vec3.new(1.0, 0.0, 0.0), Vec3.new(1.0, 0.0, 0.0), "is-approx works";
 is-approx Vec3.new(1.0, 2.0, 4.0), Vec3.new(1.0, 2.0, 4.0), "is-approx works";
 
+my $v1 = Vec3.new(1, 2, 3);
+my Vec3 $v2 = Vec3.new(3, 4, 0);
+my @v3 = (-1, 0, 2);
+my Vec3 $v3 = Vec3.new(@v3);
+my Vec3 $origin3d = Vec3.new(0, 0, 0);
+
+is $v1[0], 1, "Vector creation x correct";
+is $v1[1], 2, "Vector creation y correct";
+is $v1[2], 3, "Vector creation z correct";
+
 done;
