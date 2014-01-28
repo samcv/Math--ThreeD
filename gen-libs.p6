@@ -162,6 +162,14 @@ sub generate-vec-ops(@ops) {
             $a[0] * $b[0] + $a[1] * $b[1] + $a[2] * $b[2];
         }
         
+        multi method cross(Vec3:D $a: Vec3:D $b --> Vec3:D) is pure {
+            Vec3.new(
+                $a[1] * $b[2] - $a[2] * $b[1],
+                $a[2] * $b[0] - $a[0] * $b[2],
+                $a[0] * $b[1] - $a[1] * $b[0],
+            )
+        }
+        
         CODE
 
     $subs ~= q:to/CODE/;
@@ -208,6 +216,27 @@ sub generate-vec-ops(@ops) {
         multi sub infix:<<"\x22c5">>(Vec3:D $a, Vec3:D $b --> Numeric:D) is pure {
             $a[0] * $b[0] + $a[1] * $b[1] + $a[2] * $b[2];
         }
+        
+        proto cross (|) is export {*}
+        
+        multi sub cross(Vec3:D $a, Vec3:D $b --> Vec3:D) is pure {
+            Vec3.new(
+                $a[1] * $b[2] - $a[2] * $b[1],
+                $a[2] * $b[0] - $a[0] * $b[2],
+                $a[0] * $b[1] - $a[1] * $b[0],
+            )
+        }
+        
+        proto infix:<<"\x2a2f">>(|) is export {*}
+        
+        multi sub infix:<<"\x2a2f">>(Vec3:D $a, Vec3:D $b --> Vec3:D) is pure {
+            Vec3.new(
+                $a[1] * $b[2] - $a[2] * $b[1],
+                $a[2] * $b[0] - $a[0] * $b[2],
+                $a[0] * $b[1] - $a[1] * $b[0],
+            )
+        }
+        
         CODE
 
     my $code = qq:to/CODE/;
