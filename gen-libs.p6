@@ -162,6 +162,10 @@ sub generate-vec-ops(@ops) {
             sqrt $a[0] * $a[0] + $a[1] * $a[1] + $a[2] * $a[2];
         }
         
+        multi method length_sqr(Vec3:D $a: --> Numeric:D) is pure {
+            $a[0] * $a[0] + $a[1] * $a[1] + $a[2] * $a[2];
+        }
+        
         multi method dot(Vec3:D $a: Vec3:D $b --> Numeric:D) is pure {
             $a[0] * $b[0] + $a[1] * $b[1] + $a[2] * $b[2];
         }
@@ -306,6 +310,12 @@ sub generate-vec-ops(@ops) {
         
         multi sub length(Vec3:D $a --> Numeric:D) is pure {
             sqrt $a[0] * $a[0] + $a[1] * $a[1] + $a[2] * $a[2];
+        }
+        
+        proto length_sqr(|) is export {*}
+        
+        multi sub length_sqr(Vec3:D $a --> Numeric:D) is pure {
+            $a[0] * $a[0] + $a[1] * $a[1] + $a[2] * $a[2];
         }
         
         proto dot(|) is export {*}
