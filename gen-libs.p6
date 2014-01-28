@@ -239,3 +239,5 @@ sub MAIN() {
     );
     write-vec-pm('lib/Math/ThreeD/Vec.pm', @vec-ops);
 }
+
+# vim: set expandtab:ts=4:sw=4
