@@ -158,6 +158,10 @@ sub generate-vec-ops(@ops) {
         
         # Multi methods for other operations
         
+        multi method length(Vec3:D $a: --> Numeric:D) is pure {
+            sqrt $a[0] * $a[0] + $a[1] * $a[1] + $a[2] * $a[2];
+        }
+        
         multi method dot(Vec3:D $a: Vec3:D $b --> Numeric:D) is pure {
             $a[0] * $b[0] + $a[1] * $b[1] + $a[2] * $b[2];
         }
@@ -205,6 +209,12 @@ sub generate-vec-ops(@ops) {
         
         # Multi subs for other operations
 
+        proto length(|) is export {*}
+        
+        multi sub length(Vec3:D $a --> Numeric:D) is pure {
+            sqrt $a[0] * $a[0] + $a[1] * $a[1] + $a[2] * $a[2];
+        }
+        
         proto dot(|) is export {*}
         
         multi sub dot(Vec3:D $a, Vec3:D $b --> Numeric:D) is pure {
