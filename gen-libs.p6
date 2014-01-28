@@ -156,37 +156,8 @@ sub generate-vec-ops(@ops) {
         }
         
         
-        # Multi methods for other operations
-        
-        multi method length(Vec3:D $a: --> Numeric:D) is pure {
-            sqrt $a[0] * $a[0] + $a[1] * $a[1] + $a[2] * $a[2];
-        }
-        
-        multi method length_sqr(Vec3:D $a: --> Numeric:D) is pure {
-            $a[0] * $a[0] + $a[1] * $a[1] + $a[2] * $a[2];
-        }
-        
-        multi method dot(Vec3:D $a: Vec3:D $b --> Numeric:D) is pure {
-            $a[0] * $b[0] + $a[1] * $b[1] + $a[2] * $b[2];
-        }
-        
-        multi method cross(Vec3:D $a: Vec3:D $b --> Vec3:D) is pure {
-            Vec3.new(
-                $a[1] * $b[2] - $a[2] * $b[1],
-                $a[2] * $b[0] - $a[0] * $b[2],
-                $a[0] * $b[1] - $a[1] * $b[0],
-            )
-        }
-        
-        multi method cross(Vec3:D $a: Vec3:D $b, Vec3:D $r --> Vec3:D) is pure {
-            ($r[0], $r[1], $r[2]) = (
-                $a[1] * $b[2] - $a[2] * $b[1],
-                $a[2] * $b[0] - $a[0] * $b[2],
-                $a[0] * $b[1] - $a[1] * $b[0],
-            )
-            $r;
-        }
-        
+        # Multi methods for rotation
+
         multi method rot-x (Vec3:D $a: Numeric:D $b --> Vec3:D) is pure {
             my ($sin, $cos) = sin($b), cos($b);
             $a.new(
@@ -271,6 +242,38 @@ sub generate-vec-ops(@ops) {
             $a;
         }
         
+        
+        # Multi methods for other operations
+        
+        multi method length(Vec3:D $a: --> Numeric:D) is pure {
+            sqrt $a[0] * $a[0] + $a[1] * $a[1] + $a[2] * $a[2];
+        }
+        
+        multi method length_sqr(Vec3:D $a: --> Numeric:D) is pure {
+            $a[0] * $a[0] + $a[1] * $a[1] + $a[2] * $a[2];
+        }
+        
+        multi method dot(Vec3:D $a: Vec3:D $b --> Numeric:D) is pure {
+            $a[0] * $b[0] + $a[1] * $b[1] + $a[2] * $b[2];
+        }
+        
+        multi method cross(Vec3:D $a: Vec3:D $b --> Vec3:D) is pure {
+            Vec3.new(
+                $a[1] * $b[2] - $a[2] * $b[1],
+                $a[2] * $b[0] - $a[0] * $b[2],
+                $a[0] * $b[1] - $a[1] * $b[0],
+            )
+        }
+        
+        multi method cross(Vec3:D $a: Vec3:D $b, Vec3:D $r --> Vec3:D) is pure {
+            ($r[0], $r[1], $r[2]) = (
+                $a[1] * $b[2] - $a[2] * $b[1],
+                $a[2] * $b[0] - $a[0] * $b[2],
+                $a[0] * $b[1] - $a[1] * $b[0],
+            )
+            $r;
+        }
+        
         CODE
 
     $subs ~= q:to/CODE/;
@@ -304,60 +307,7 @@ sub generate-vec-ops(@ops) {
         }
         
         
-        # Multi subs for other operations
-
-        proto length(|) is export {*}
-        
-        multi sub length(Vec3:D $a --> Numeric:D) is pure {
-            sqrt $a[0] * $a[0] + $a[1] * $a[1] + $a[2] * $a[2];
-        }
-        
-        proto length_sqr(|) is export {*}
-        
-        multi sub length_sqr(Vec3:D $a --> Numeric:D) is pure {
-            $a[0] * $a[0] + $a[1] * $a[1] + $a[2] * $a[2];
-        }
-        
-        proto dot(|) is export {*}
-        
-        multi sub dot(Vec3:D $a, Vec3:D $b --> Numeric:D) is pure {
-            $a[0] * $b[0] + $a[1] * $b[1] + $a[2] * $b[2];
-        }
-        
-        proto infix:<<"\x22c5">>(|) is export {*}
-        
-        multi sub infix:<<"\x22c5">>(Vec3:D $a, Vec3:D $b --> Numeric:D) is pure {
-            $a[0] * $b[0] + $a[1] * $b[1] + $a[2] * $b[2];
-        }
-        
-        proto cross (|) is export {*}
-        
-        multi sub cross(Vec3:D $a, Vec3:D $b --> Vec3:D) is pure {
-            Vec3.new(
-                $a[1] * $b[2] - $a[2] * $b[1],
-                $a[2] * $b[0] - $a[0] * $b[2],
-                $a[0] * $b[1] - $a[1] * $b[0],
-            )
-        }
-        
-        multi sub cross(Vec3:D $a, Vec3:D $b, Vec3:D $r --> Vec3:D) is pure {
-            ($r[0], $r[1], $r[2]) = (
-                $a[1] * $b[2] - $a[2] * $b[1],
-                $a[2] * $b[0] - $a[0] * $b[2],
-                $a[0] * $b[1] - $a[1] * $b[0],
-            )
-            $r;
-        }
-        
-        proto infix:<<"\x2a2f">>(|) is export {*}
-        
-        multi sub infix:<<"\x2a2f">>(Vec3:D $a, Vec3:D $b --> Vec3:D) is pure {
-            Vec3.new(
-                $a[1] * $b[2] - $a[2] * $b[1],
-                $a[2] * $b[0] - $a[0] * $b[2],
-                $a[0] * $b[1] - $a[1] * $b[0],
-            )
-        }
+        # Multi subs for rotation
         
         multi sub rot-x (Vec3:D $a, Numeric:D $b --> Vec3:D) is pure {
             my ($sin, $cos) = sin($b), cos($b);
@@ -441,6 +391,62 @@ sub generate-vec-ops(@ops) {
                 $a[0] * $sin + $a[1] * $cos,
             );
             $a;
+        }
+        
+        
+        # Multi subs for other operations
+
+        proto length(|) is export {*}
+        
+        multi sub length(Vec3:D $a --> Numeric:D) is pure {
+            sqrt $a[0] * $a[0] + $a[1] * $a[1] + $a[2] * $a[2];
+        }
+        
+        proto length_sqr(|) is export {*}
+        
+        multi sub length_sqr(Vec3:D $a --> Numeric:D) is pure {
+            $a[0] * $a[0] + $a[1] * $a[1] + $a[2] * $a[2];
+        }
+        
+        proto dot(|) is export {*}
+        
+        multi sub dot(Vec3:D $a, Vec3:D $b --> Numeric:D) is pure {
+            $a[0] * $b[0] + $a[1] * $b[1] + $a[2] * $b[2];
+        }
+        
+        proto infix:<<"\x22c5">>(|) is export {*}
+        
+        multi sub infix:<<"\x22c5">>(Vec3:D $a, Vec3:D $b --> Numeric:D) is pure {
+            $a[0] * $b[0] + $a[1] * $b[1] + $a[2] * $b[2];
+        }
+        
+        proto cross (|) is export {*}
+        
+        multi sub cross(Vec3:D $a, Vec3:D $b --> Vec3:D) is pure {
+            Vec3.new(
+                $a[1] * $b[2] - $a[2] * $b[1],
+                $a[2] * $b[0] - $a[0] * $b[2],
+                $a[0] * $b[1] - $a[1] * $b[0],
+            )
+        }
+        
+        multi sub cross(Vec3:D $a, Vec3:D $b, Vec3:D $r --> Vec3:D) is pure {
+            ($r[0], $r[1], $r[2]) = (
+                $a[1] * $b[2] - $a[2] * $b[1],
+                $a[2] * $b[0] - $a[0] * $b[2],
+                $a[0] * $b[1] - $a[1] * $b[0],
+            )
+            $r;
+        }
+        
+        proto infix:<<"\x2a2f">>(|) is export {*}
+        
+        multi sub infix:<<"\x2a2f">>(Vec3:D $a, Vec3:D $b --> Vec3:D) is pure {
+            Vec3.new(
+                $a[1] * $b[2] - $a[2] * $b[1],
+                $a[2] * $b[0] - $a[0] * $b[2],
+                $a[0] * $b[1] - $a[1] * $b[0],
+            )
         }
         
         CODE
