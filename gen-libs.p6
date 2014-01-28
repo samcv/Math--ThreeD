@@ -174,6 +174,90 @@ sub generate-vec-ops(@ops) {
             )
         }
         
+        multi method rot-x (Vec3:D $a: Numeric:D $b --> Vec3:D) is pure {
+            my ($sin, $cos) = sin($b), cos($b);
+            $a.new(
+                $a[0],
+                $a[1] * $cos - $a[2] * $sin,
+                $a[1] * $sin + $a[2] * $cos,
+            );
+        }
+        
+        multi method rot-x (Vec3:D $a: Numeric:D $b, Vec3:D $r --> Vec3:D) is pure {
+            my ($sin, $cos) = sin($b), cos($b);
+            ($r[0], $r[1], $r[2]) = (
+                $a[0],
+                $a[1] * $cos - $a[2] * $sin,
+                $a[1] * $sin + $a[2] * $cos,
+            );
+            $r;
+        }
+        
+        multi method rot-y (Vec3:D $a: Numeric:D $b --> Vec3:D) is pure {
+            my ($sin, $cos) = sin($b), cos($b);
+            $a.new(
+                $a[0] * $cos - $a[2] * $sin,
+                $a[1],
+                $a[0] * $sin + $a[2] * $cos,
+            );
+        }
+        
+        multi method rot-y (Vec3:D $a: Numeric:D $b, Vec3:D $r --> Vec3:D) is pure {
+            my ($sin, $cos) = sin($b), cos($b);
+            ($r[0], $r[1], $r[2]) = (
+                $a[0] * $cos - $a[2] * $sin,
+                $a[1],
+                $a[0] * $sin + $a[2] * $cos,
+            );
+            $r;
+        }
+        
+        multi method rot-z (Vec3:D $a: Numeric:D $b --> Vec3:D) is pure {
+            my ($sin, $cos) = sin($b), cos($b);
+            $a.new(
+                $a[0] * $cos - $a[1] * $sin,
+                $a[0] * $sin + $a[1] * $cos,
+                $a[2],
+            );
+        }
+        
+        multi method rot-z (Vec3:D $a: Numeric:D $b, Vec3:D $r --> Vec3:D) is pure {
+            my ($sin, $cos) = sin($b), cos($b);
+            ($r[0], $r[1], $r[2]) = (
+                $a[0] * $cos - $a[1] * $sin,
+                $a[0] * $sin + $a[1] * $cos,
+                $a[2],
+            );
+            $r;
+        }
+        
+        multi method rotate-x (Vec3:D $a: Numeric:D $b --> Vec3:D) {
+            my ($sin, $cos) = sin($b), cos($b);
+            ($a[1], $a[2]) = (
+                $a[1] * $cos - $a[2] * $sin,
+                $a[1] * $sin + $a[2] * $cos,
+            );
+            $a;
+        }
+        
+        multi method rotate-y (Vec3:D $a: Numeric:D $b --> Vec3:D) {
+            my ($sin, $cos) = sin($b), cos($b);
+            ($a[0], $a[2]) = (
+                $a[0] * $cos - $a[2] * $sin,
+                $a[0] * $sin + $a[2] * $cos,
+            );
+            $a;
+        }
+        
+        multi method rotate-z (Vec3:D $a: Numeric:D $b --> Vec3:D) {
+            my ($sin, $cos) = sin($b), cos($b);
+            ($a[0], $a[1]) = (
+                $a[0] * $cos - $a[1] * $sin,
+                $a[0] * $sin + $a[1] * $cos,
+            );
+            $a;
+        }
+        
         CODE
 
     $subs ~= q:to/CODE/;
@@ -245,6 +329,90 @@ sub generate-vec-ops(@ops) {
                 $a[2] * $b[0] - $a[0] * $b[2],
                 $a[0] * $b[1] - $a[1] * $b[0],
             )
+        }
+        
+        multi sub rot-x (Vec3:D $a, Numeric:D $b --> Vec3:D) is pure {
+            my ($sin, $cos) = sin($b), cos($b);
+            $a.new(
+                $a[0],
+                $a[1] * $cos - $a[2] * $sin,
+                $a[1] * $sin + $a[2] * $cos,
+            );
+        }
+        
+        multi sub rot-x (Vec3:D $a, Numeric:D $b, Vec3:D $r --> Vec3:D) is pure {
+            my ($sin, $cos) = sin($b), cos($b);
+            ($r[0], $r[1], $r[2]) = (
+                $a[0],
+                $a[1] * $cos - $a[2] * $sin,
+                $a[1] * $sin + $a[2] * $cos,
+            );
+            $r;
+        }
+        
+        multi sub rot-y (Vec3:D $a, Numeric:D $b --> Vec3:D) is pure {
+            my ($sin, $cos) = sin($b), cos($b);
+            $a.new(
+                $a[0] * $cos - $a[2] * $sin,
+                $a[1],
+                $a[0] * $sin + $a[2] * $cos,
+            );
+        }
+        
+        multi sub rot-y (Vec3:D $a, Numeric:D $b, Vec3:D $r --> Vec3:D) is pure {
+            my ($sin, $cos) = sin($b), cos($b);
+            ($r[0], $r[1], $r[2]) = (
+                $a[0] * $cos - $a[2] * $sin,
+                $a[1],
+                $a[0] * $sin + $a[2] * $cos,
+            );
+            $r;
+        }
+        
+        multi sub rot-z (Vec3:D $a, Numeric:D $b --> Vec3:D) is pure {
+            my ($sin, $cos) = sin($b), cos($b);
+            $a.new(
+                $a[0] * $cos - $a[1] * $sin,
+                $a[0] * $sin + $a[1] * $cos,
+                $a[2],
+            );
+        }
+        
+        multi sub rot-z (Vec3:D $a, Numeric:D $b, Vec3:D $r --> Vec3:D) is pure {
+            my ($sin, $cos) = sin($b), cos($b);
+            ($r[0], $r[1], $r[2]) = (
+                $a[0] * $cos - $a[1] * $sin,
+                $a[0] * $sin + $a[1] * $cos,
+                $a[2],
+            );
+            $r;
+        }
+        
+        multi sub rotate-x (Vec3:D $a, Numeric:D $b --> Vec3:D) {
+            my ($sin, $cos) = sin($b), cos($b);
+            ($a[1], $a[2]) = (
+                $a[1] * $cos - $a[2] * $sin,
+                $a[1] * $sin + $a[2] * $cos,
+            );
+            $a;
+        }
+        
+        multi sub rotate-y (Vec3:D $a, Numeric:D $b --> Vec3:D) {
+            my ($sin, $cos) = sin($b), cos($b);
+            ($a[0], $a[2]) = (
+                $a[0] * $cos - $a[2] * $sin,
+                $a[0] * $sin + $a[2] * $cos,
+            );
+            $a;
+        }
+        
+        multi sub rotate-z (Vec3:D $a, Numeric:D $b --> Vec3:D) {
+            my ($sin, $cos) = sin($b), cos($b);
+            ($a[0], $a[1]) = (
+                $a[0] * $cos - $a[1] * $sin,
+                $a[0] * $sin + $a[1] * $cos,
+            );
+            $a;
         }
         
         CODE
