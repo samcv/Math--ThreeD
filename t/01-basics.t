@@ -2,10 +2,6 @@ use v6;
 use Math::ThreeD::Vec;
 use Test;
 
-multi sub length(Vec3 $v) {
-    ($v[0] ** 2 + $v[1] ** 2 + $v[2] ** 2).sqrt;
-}
-
 multi sub is-approx(Vec3 $v1, Vec3 $v2, $desc?) {
     if length(Vec3.new($v2[0] - $v1[0], $v2[1] - $v1[1], $v2[2] - $v1[2])) < 1e-6 {
         ok True, $desc;
