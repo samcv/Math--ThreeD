@@ -174,6 +174,15 @@ sub generate-vec-ops(@ops) {
             )
         }
         
+        multi method cross(Vec3:D $a: Vec3:D $b, Vec3:D $r --> Vec3:D) is pure {
+            ($r[0], $r[1], $r[2]) = (
+                $a[1] * $b[2] - $a[2] * $b[1],
+                $a[2] * $b[0] - $a[0] * $b[2],
+                $a[0] * $b[1] - $a[1] * $b[0],
+            )
+            $r;
+        }
+        
         multi method rot-x (Vec3:D $a: Numeric:D $b --> Vec3:D) is pure {
             my ($sin, $cos) = sin($b), cos($b);
             $a.new(
@@ -319,6 +328,15 @@ sub generate-vec-ops(@ops) {
                 $a[2] * $b[0] - $a[0] * $b[2],
                 $a[0] * $b[1] - $a[1] * $b[0],
             )
+        }
+        
+        multi sub cross(Vec3:D $a, Vec3:D $b, Vec3:D $r --> Vec3:D) is pure {
+            ($r[0], $r[1], $r[2]) = (
+                $a[1] * $b[2] - $a[2] * $b[1],
+                $a[2] * $b[0] - $a[0] * $b[2],
+                $a[0] * $b[1] - $a[1] * $b[0],
+            )
+            $r;
         }
         
         proto infix:<<"\x2a2f">>(|) is export {*}
