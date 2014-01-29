@@ -470,6 +470,7 @@ sub write-vec-pm($outfile, @ops) {
 }
 
 sub MAIN() {
+    chdir $?FILE.path.directory;
     my @vec-ops = (
        #  - neg negate
        [< + add plus    >],
