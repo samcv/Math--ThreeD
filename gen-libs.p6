@@ -295,6 +295,7 @@ sub generate-vec-ops(@ops) {
         }
 
         proto negate(|) is export {*}        
+        
         multi sub negate(Vec3:D $a --> Vec3:D) {
             $a[0] = -$a[0];
             $a[1] = -$a[1];
@@ -302,13 +303,15 @@ sub generate-vec-ops(@ops) {
             $a;
         }
 
-        multi sub prefix:<->(Vec3:D $a --> Vec3:D) is pure {
+        multi sub prefix:<->(Vec3:D $a --> Vec3:D) is pure is export {
             Vec3.new(-$a[0], -$a[1], -$a[2]);
         }
         
         
         # Multi subs for rotation
         
+        proto sub rot-x (|) is export {*}
+
         multi sub rot-x(Vec3:D $a, Numeric:D $b --> Vec3:D) is pure {
             my ($sin, $cos) = sin($b), cos($b);
             $a.new(
@@ -327,6 +330,8 @@ sub generate-vec-ops(@ops) {
             );
             $r;
         }
+        
+        proto sub rot-y (|) is export {*}
         
         multi sub rot-y(Vec3:D $a, Numeric:D $b --> Vec3:D) is pure {
             my ($sin, $cos) = sin($b), cos($b);
@@ -347,6 +352,8 @@ sub generate-vec-ops(@ops) {
             $r;
         }
         
+        proto sub rot-z (|) is export {*}
+        
         multi sub rot-z(Vec3:D $a, Numeric:D $b --> Vec3:D) is pure {
             my ($sin, $cos) = sin($b), cos($b);
             $a.new(
@@ -366,7 +373,7 @@ sub generate-vec-ops(@ops) {
             $r;
         }
         
-        multi sub rotate-x(Vec3:D $a, Numeric:D $b --> Vec3:D) {
+        multi sub rotate-x(Vec3:D $a, Numeric:D $b --> Vec3:D) is export {
             my ($sin, $cos) = sin($b), cos($b);
             ($a[1], $a[2]) = (
                 $a[1] * $cos - $a[2] * $sin,
@@ -375,7 +382,7 @@ sub generate-vec-ops(@ops) {
             $a;
         }
         
-        multi sub rotate-y(Vec3:D $a, Numeric:D $b --> Vec3:D) {
+        multi sub rotate-y(Vec3:D $a, Numeric:D $b --> Vec3:D) is export {
             my ($sin, $cos) = sin($b), cos($b);
             ($a[0], $a[2]) = (
                 $a[0] * $cos - $a[2] * $sin,
@@ -384,7 +391,7 @@ sub generate-vec-ops(@ops) {
             $a;
         }
         
-        multi sub rotate-z(Vec3:D $a, Numeric:D $b --> Vec3:D) {
+        multi sub rotate-z(Vec3:D $a, Numeric:D $b --> Vec3:D) is export {
             my ($sin, $cos) = sin($b), cos($b);
             ($a[0], $a[1]) = (
                 $a[0] * $cos - $a[1] * $sin,
@@ -396,27 +403,19 @@ sub generate-vec-ops(@ops) {
         
         # Multi subs for other operations
 
-        proto length(|) is export {*}
-        
-        multi sub length(Vec3:D $a --> Numeric:D) is pure {
+        multi sub length(Vec3:D $a --> Numeric:D) is pure is export {
             sqrt $a[0] * $a[0] + $a[1] * $a[1] + $a[2] * $a[2];
         }
         
-        proto length_sqr(|) is export {*}
-        
-        multi sub length_sqr(Vec3:D $a --> Numeric:D) is pure {
+        multi sub length_sqr(Vec3:D $a --> Numeric:D) is pure is export {
             $a[0] * $a[0] + $a[1] * $a[1] + $a[2] * $a[2];
         }
         
-        proto dot(|) is export {*}
-        
-        multi sub dot(Vec3:D $a, Vec3:D $b --> Numeric:D) is pure {
+        multi sub dot(Vec3:D $a, Vec3:D $b --> Numeric:D) is pure is export {
             $a[0] * $b[0] + $a[1] * $b[1] + $a[2] * $b[2];
         }
         
-        proto infix:<<"\x22c5">>(|) is export {*}
-        
-        multi sub infix:<<"\x22c5">>(Vec3:D $a, Vec3:D $b --> Numeric:D) is pure {
+        multi sub infix:<<"\x22c5">>(Vec3:D $a, Vec3:D $b --> Numeric:D) is pure is export {
             $a[0] * $b[0] + $a[1] * $b[1] + $a[2] * $b[2];
         }
         
@@ -439,9 +438,7 @@ sub generate-vec-ops(@ops) {
             $r;
         }
         
-        proto infix:<<"\x2a2f">>(|) is export {*}
-        
-        multi sub infix:<<"\x2a2f">>(Vec3:D $a, Vec3:D $b --> Vec3:D) is pure {
+        multi sub infix:<<"\x2a2f">>(Vec3:D $a, Vec3:D $b --> Vec3:D) is pure is export {
             Vec3.new(
                 $a[1] * $b[2] - $a[2] * $b[1],
                 $a[2] * $b[0] - $a[0] * $b[2],
