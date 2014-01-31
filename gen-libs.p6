@@ -466,17 +466,15 @@ sub write-vec-pm($outfile, @ops) {
     $out.close;
 }
 
-sub MAIN() {
-    chdir $?FILE.path.directory;
-    my @vec-ops = (
-       #  - neg negate
-       [< + add plus    >],
-       [< - sub minus   >],
-       [< * mul times   >],
-       [< / div divide  >],
-       [< % mod modulus >],
-    );
-    write-vec-pm('lib/Math/ThreeD/Vec.pm', @vec-ops);
-}
+chdir $?FILE.path.directory;
+my @vec-ops = (
+   #  - neg negate
+   [< + add plus    >],
+   [< - sub minus   >],
+   [< * mul times   >],
+   [< / div divide  >],
+   [< % mod modulus >],
+);
+write-vec-pm('lib/Math/ThreeD/Vec.pm', @vec-ops);
 
 # vim: set expandtab:ts=4:sw=4
