@@ -1,5 +1,5 @@
 use v6;
-use Math::ThreeD::Vec;
+use Math::ThreeD::Vec3;
 use Test;
 
 multi sub is-approx(Vec3 $v1, Vec3 $v2, $desc?) {

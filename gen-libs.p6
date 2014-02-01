@@ -475,6 +475,6 @@ my @vec-ops = (
    [< / div divide  >],
    [< % mod modulus >],
 );
-write-vec-pm('lib/Math/ThreeD/Vec.pm', @vec-ops);
+write-vec-pm('lib/Math/ThreeD/Vec3.pm', @vec-ops);
 
 # vim: set expandtab:ts=4:sw=4
