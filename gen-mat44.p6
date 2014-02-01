@@ -9,6 +9,9 @@ Math::ThreeD::Library.new(
     name => 'Mat44',
     constructor => 'mat44',
     elems => my $elems = 16,
+    intro => q[sub postcircumfix:<[ ]> (Mat44:D $a, int $i) is export {
+    $a.at_pos($i), $a.at_pos($i+4), $a.at_pos($i+8), $a.at_pos($i+12)
+}],
     ops => (
 
         op( operator => '+',
