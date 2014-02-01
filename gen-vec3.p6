@@ -11,8 +11,7 @@ Math::ThreeD::Library.new(
     elems => 3,
     ops => (
 
-        op(
-            operator => '+',
+        op( operator => '+',
             function => 'add',
             mutator => 'plus',
             args => [[ <obj> ],[ <num> ]],
@@ -114,9 +113,8 @@ Math::ThreeD::Library.new(
 
         op( function => 'dump',
             body => 'say $a.perl',
-            return => ''
+            return => '',
         ),
-
 
     ),
 ).write('lib/Math/ThreeD/Vec3.pm');
