@@ -24,7 +24,10 @@ Math::ThreeD::Library.new(
             args => [[ <obj> ],[ <num> ]],
         ),
 
-        op( operator => '-',),
+        op( operator => '-',
+            function => 'neg',
+            mutator => 'negate',
+        ),
 
         op( operator => '*',
             function => 'mul',
