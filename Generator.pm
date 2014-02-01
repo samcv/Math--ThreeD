@@ -37,6 +37,10 @@ class Math::ThreeD::Operation {
             }
             if self.operator {
                 $return ~= self.build_routine('operator', 'new', $_, :$lib);
+                if @$_ == 1 && $_[0] eq 'num' {
+                    $return ~= self.build_routine('operator', 'new', $_,
+                        :$lib, :argfirst);
+                }
             }
         }
 
@@ -49,6 +53,7 @@ class Math::ThreeD::Operation {
         @args,
         :$lib!,
         Bool :$clear-line = True,
+        Bool :$argfirst = False,
     ) {
         my $name;
         if $routine eq 'operator' {
@@ -59,50 +64,54 @@ class Math::ThreeD::Operation {
                 @args ?? "infix:<$.operator>" !!
                 $.postfix ?? "postfix:<$.operator>" !!
                 "prefix:<$.operator>";
-            
-            $routine := 'sub';
         } else {
             $name = $result eq 'mutator' ?? $.mutator !! $.function;
         }
-        my $beginning = "multi $routine $name ($lib.name()" ~ ':D $a';
-        my $is_method = ($routine eq 'method');
-        $beginning ~= ':' if $is_method;
-        if @args || $result eq 'rw' {
-            $beginning ~= ',' unless $is_method;
-            $beginning ~= ' ';
-        }
-        my $first = True;
+
+        my @params = "$lib.name():D \$";
         if @args {
-            my $var = 'b';
             for @args {
-                $beginning ~= ', ' unless $first;
-                $first = False;
-                $beginning ~= $_ eq 'num' ?? 'Numeric' !! $lib.name;
-                $beginning ~= ":D \${$var++}";
+                @params.push: "{$_ eq 'num' ?? 'Numeric' !! $lib.name}:D \$";
             }
         }
-        my $return;
+
+        my $params = '';
+        my $var = 'a';
+        my $is_method = ($routine eq 'method');
+        @params.unshift: @params.splice(1,1) if $argfirst;
+        for @params {
+            $params ~= $is_method && $var eq 'b' ?? ' ' !! ', '
+                if $params;
+            $params ~= $_ ~ $var++;
+            $params ~= ':' if $is_method && $var eq 'b';
+        }
+
         if $.return {
-            $return =
+            my $return =
                 $.return eq 'obj' ?? "{$lib.name}:D" !!
                 $.return eq 'num' ?? 'Numeric:D' !!
                 $.return;
 
             if $result eq 'rw' {
-                $beginning ~= ', ' if @args;
-                $beginning ~= "$return \$r is rw";
+                if $params {
+                    $params ~= ',' unless $is_method && $var eq 'b';
+                    $params ~= ' ' if $params;
+                }
+                $params ~= "$return \$r is rw";
             }
-            $beginning ~= " --> $return) ";
+            $params ~= " --> $return";
         } else {
-            #$beginning ~= ' --> Nil) ';
-            $beginning ~= ') ';
+            #$params ~= " --> Nil";
         }
+
+        my $beginning = "multi {$routine eq 'method' ?? 'method' !! 'sub'} $name ($params) ";
         $beginning ~= 'is pure ' if $result eq 'new';
-        $beginning ~= 'is export ' if $routine eq 'sub';
+        $beginning ~= 'is export ' if $routine ne 'method';
         $beginning ~= '{';
         
         my $build = "$beginning\n{
-            self.build_routine_body($routine, $result, @args, :$lib).indent(4)
+            self.build_routine_body($routine, $result, @args, :$lib, :$argfirst)\
+                .indent(4)
         }\n\}";
         $build ~= "\n\n" if $clear-line;
         
@@ -110,24 +119,25 @@ class Math::ThreeD::Operation {
     }
 
     method build_routine_body (
-        Str:D $routine where {any <sub method>},
-        Str:D $result where {any <new rw mutator>},
+        Str:D $routine,
+        Str:D $result,
         @args,
         :$lib!,
+        Bool :$argfirst = False,
     ) {
         my $return = '';
         $return ~= "$.intro\n\n" if $.intro;
 
         return "$return$.body" if $.body;
         
-        my $expression = self.build_routine_expression(@args, :$lib);
+        my $expression = self.build_routine_expression(@args, :$lib, :$argfirst);
         
         if $.return eq 'obj' {
             $expression .= indent(4);
             if $result eq 'new' {
                 $return ~= "{$lib.name}.new(\n$expression\n);";
             } else {
-                my $r = $result eq 'rw' ?? '$r' !! '$a';
+                my $r = $result eq 'rw' ?? '$r' !! $argfirst ?? '$b' !! '$a';
                 my $i = 0;
                 $return ~= "({(^$lib.elems).map({"$r\[$_]"}).join(',')}) =\n$expression;\n$r;";
             }
@@ -144,13 +154,13 @@ class Math::ThreeD::Operation {
         $return;
     }
     
-    method build_routine_expression (@args, :$lib!) {
+    method build_routine_expression (@args, :$lib!, Bool :$argfirst = False) {
         return $.expression if $.expression;
 
         my $return;
 
         if $.return eq 'obj' {
-            $return = self.build_routine_expressions(@args, :$lib).join(",\n");
+            $return = self.build_routine_expressions(@args, :$lib, :$argfirst).join(",\n");
         } elsif $.return eq 'num' {
             die "Cannot autogenerate this operation:\n{self.perl}"
                 unless $.operator && (!@args || @args == 1 && @args[0] eq 'num');
@@ -167,7 +177,7 @@ class Math::ThreeD::Operation {
         $return;
     }
 
-    method build_routine_expressions (@args, :$lib!) {
+    method build_routine_expressions (@args, :$lib!, Bool :$argfirst) {
         return @.expressions if @.expressions;
 
         die "Cannot autogenerate this operation:\n{self.perl}"
@@ -177,7 +187,10 @@ class Math::ThreeD::Operation {
         my @expressions;
         
         if @args {
-            @expressions = (^$lib.elems).map({"\$a[$_] $op \$b"});
+            my $map_expr = $argfirst ??
+                {     "\$a $op \$b[$_]" } !!
+                { "\$a[$_] $op \$b"     };
+            @expressions = (^$lib.elems).map($map_expr);
 
             if @args[0] eq 'obj' {
                 my $i = 0;
