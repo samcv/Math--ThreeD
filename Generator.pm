@@ -87,11 +87,12 @@ class Math::ThreeD::Operation {
                 $.return eq 'obj' ?? "{$lib.name}:D" !!
                 $.return eq 'num' ?? 'Numeric:D' !!
                 $.return;
+
             if $result eq 'rw' {
                 $beginning ~= ', ' if @args;
                 $beginning ~= "$return \$r is rw";
             }
-            $beginning ~= " --> {$return}:D) ";
+            $beginning ~= " --> $return) ";
         } else {
             #$beginning ~= ' --> Nil) ';
             $beginning ~= ') ';
