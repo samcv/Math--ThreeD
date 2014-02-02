@@ -9,8 +9,13 @@ Math::ThreeD::Library.new(
     name => 'Mat44',
     constructor => 'mat44',
     elems => my $elems = 16,
-    intro => q[method at_pos (Mat44:D $a: $b) is rw {
-		$a.Array::[$b, $b+4, $b+8, $b+12]
+    intro =>
+q[method at_pos ($i) is rw {
+    self.Array::at_pos($_  ),
+    self.Array::at_pos($_+1),
+    self.Array::at_pos($_+2),
+    self.Array::at_pos($_+3)
+        given $i*4;
 }],
     ops => (
 
