@@ -16,6 +16,72 @@ q[method at_pos ($i) is rw {
     self.Array::at_pos($_+2),
     self.Array::at_pos($_+3)
         given $i*4;
+}
+
+method zero() {
+    Mat44.new(
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+    )
+}
+
+method identity() {
+    Mat44.new(
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1,
+    )
+}
+
+method trans($x, $y, $z) {
+    Mat44.new(
+        1, 0, 0, $x,
+        0, 1, 0, $y,
+        0, 0, 1, $z,
+        0, 0, 0,  1,
+    )
+}
+
+method scale($x, $y, $z) {
+    Mat44.new(
+        $x,  0,  0, 0,
+         0, $y,  0, 0,
+         0,  0, $z, 0,
+         0,  0,  0, 1,
+    )
+}
+
+method rot-x(Numeric:D $a) {
+    my ($sin, $cos) = sin($a), cos($a);
+    Mat44.new(
+        1,    0,     0, 0,
+        0, $cos, -$sin, 0,
+        0, $sin,  $cos, 0,
+        0,    0,     0, 1,
+    )
+}
+
+method rot-y(Numeric:D $a) {
+    my ($sin, $cos) = sin($a), cos($a);
+    Mat44.new(
+        $cos, 0, -$sin, 0,
+           0, 1,     0, 0,
+        $sin, 0,  $cos, 0,
+           0, 0,     0, 1,
+    )
+}
+
+method rot-z(Numeric:D $a) {
+    my ($sin, $cos) = sin($a), cos($a);
+    Mat44.new(
+        $cos, -$sin, 0, 0,
+        $sin,  $cos, 0, 0,
+           0,     0, 1, 0,
+           0,     0, 0, 1,
+    )
 }],
     ops => (
 
