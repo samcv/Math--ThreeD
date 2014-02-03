@@ -67,7 +67,12 @@ class Math::ThreeD::Operation {
         my @params = "$lib.name():D \$";
         if @args {
             for @args {
-                @params.push: "{$_ eq 'num' ?? 'Numeric' !! $lib.name}:D \$";
+                my $argtype = {
+                    when 'num' { 'Numeric' }
+                    when 'obj' { $lib.name }
+                    default { $_ }
+                }();
+                @params.push: "$argtype:D \$";
             }
         }
 
@@ -168,6 +173,8 @@ class Math::ThreeD::Operation {
             } else {
                 $return = "$op\$a";
             }
+        } else {
+            die "Cannot autogenerate this operation:\n{self.perl}";
         }
         
         $return;
