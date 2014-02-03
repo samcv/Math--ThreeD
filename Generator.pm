@@ -213,9 +213,15 @@ class Math::ThreeD::Library {
     has Str $.intro;
     has Str $.constructor;
     has Math::ThreeD::Operation:D @.ops;
+    has @.use;
 
     method build () {
         my $build = "class $.name is Array;\n\n";
+
+        if @.use {
+            $build ~= "use $_;\n" for @.use;
+            $build ~= "\n";
+        }
 
         $build ~= "$.intro\n\n" if $.intro;
         
