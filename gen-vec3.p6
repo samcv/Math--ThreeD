@@ -9,6 +9,7 @@ Math::ThreeD::Library.new(
     name => 'Vec3',
     constructor => 'vec3',
     elems => 3,
+    use => 'Math::ThreeD::Mat44',
     ops => (
 
         op( operator => '+',
@@ -117,6 +118,16 @@ Math::ThreeD::Library.new(
         op( function => 'dump',
             body => 'say $a.perl',
             return => '',
+        ),
+
+        op( function => 'trans',
+            mutator => 'transform',
+            args => [ ['Mat44'] ],
+            expressions => [
+                '$a[0]*$b[0][0] + $a[1]*$b[0][1] + $a[2]*$b[0][2] + $b[0][3]',
+                '$a[0]*$b[1][0] + $a[1]*$b[1][1] + $a[2]*$b[1][2] + $b[1][3]',
+                '$a[0]*$b[2][0] + $a[1]*$b[2][1] + $a[2]*$b[2][2] + $b[2][3]',
+            ],
         ),
 
     ),
