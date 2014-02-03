@@ -1,7 +1,3 @@
-# TODO
-# expand param and return type definitions
-# think about matrix ops
-
 use v6;
 use Shell::Command;
 
