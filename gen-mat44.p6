@@ -18,7 +18,7 @@ q[method at_pos ($i) is rw {
         given $i*4;
 }
 
-method zero() {
+sub mat44-zero() is export {
     Mat44.new(
         0, 0, 0, 0,
         0, 0, 0, 0,
@@ -27,7 +27,7 @@ method zero() {
     )
 }
 
-method identity() {
+sub mat44-ident() is export {
     Mat44.new(
         1, 0, 0, 0,
         0, 1, 0, 0,
@@ -36,7 +36,7 @@ method identity() {
     )
 }
 
-method trans($x, $y, $z) {
+sub mat44-trans($x, $y, $z) is export {
     Mat44.new(
         1, 0, 0, $x,
         0, 1, 0, $y,
@@ -45,7 +45,7 @@ method trans($x, $y, $z) {
     )
 }
 
-method scale($x, $y, $z) {
+sub mat44-scale($x, $y, $z) is export {
     Mat44.new(
         $x,  0,  0, 0,
          0, $y,  0, 0,
@@ -54,7 +54,7 @@ method scale($x, $y, $z) {
     )
 }
 
-method rot-x(Numeric:D $a) {
+sub mat44-rot-x(Numeric:D $a) is export {
     my ($sin, $cos) = sin($a), cos($a);
     Mat44.new(
         1,    0,     0, 0,
@@ -64,7 +64,7 @@ method rot-x(Numeric:D $a) {
     )
 }
 
-method rot-y(Numeric:D $a) {
+sub mat44-rot-y(Numeric:D $a) is export {
     my ($sin, $cos) = sin($a), cos($a);
     Mat44.new(
         $cos, 0, -$sin, 0,
@@ -74,7 +74,7 @@ method rot-y(Numeric:D $a) {
     )
 }
 
-method rot-z(Numeric:D $a) {
+sub mat44-rot-z(Numeric:D $a) is export {
     my ($sin, $cos) = sin($a), cos($a);
     Mat44.new(
         $cos, -$sin, 0, 0,
