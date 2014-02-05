@@ -140,6 +140,17 @@ Math::ThreeD::Library.new(
             ],
         ),
 
+        op( function => 'refl',
+            mutator => 'reflect',
+            args => [[ <obj> ]],
+            intro => 'my $scale = 2 * $a.dot($b);',
+            expressions => [
+                '$b[0] * $scale - $a[0]',
+                '$b[1] * $scale - $a[1]',
+                '$b[2] * $scale - $a[2]',
+            ],
+        ),
+
     ),
 ).write('lib/Math/ThreeD/Vec3.pm');
 
