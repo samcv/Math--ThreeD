@@ -130,6 +130,16 @@ Math::ThreeD::Library.new(
             ],
         ),
 
+        op( function => 'norm',
+            mutator => 'normalize',
+            intro => 'my $l = $a.length || 1;',
+            expressions => [
+                '$a[0] / $l',
+                '$a[1] / $l',
+                '$a[2] / $l',
+            ],
+        ),
+
     ),
 ).write('lib/Math/ThreeD/Vec3.pm');
 
