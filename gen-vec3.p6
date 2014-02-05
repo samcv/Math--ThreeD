@@ -115,6 +115,21 @@ Math::ThreeD::Library.new(
             ],
         ),
 
+        op( function => 'rot',
+            mutator => 'rotate',
+            args => [[ <obj num> ]],
+            intro => 
+q[my $sin = sin $c;
+my $cos = cos $c;
+my $dot_scaled = $b.dot($a) * (1 - $cos);
+my $cross = $b.cross($a);],
+            expressions => [
+                '$a[0] * $cos + $cross[0] * $sin + $b[0] * $dot_scaled',
+                '$a[1] * $cos + $cross[1] * $sin + $b[1] * $dot_scaled',
+                '$a[2] * $cos + $cross[2] * $sin + $b[2] * $dot_scaled',
+            ],
+        ),
+
         op( function => 'dump',
             body => 'say $a.perl',
             return => '',
