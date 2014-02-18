@@ -1,11 +1,8 @@
-NOTE:  UNUSABLE WORK IN PROGRESS!
+A relatively efficient (but still pure Perl 6) 3D math library, generated
+procedurally. Useful for anything from building a ray tracer to writing a
+twitch game to simulating simple physics. Currently supports 3-element vectors
+and 4x4 matrices.
 
-Just the bare beginnings of an idea: generating relatively efficient
-(but still pure Perl 6) code for a 3D math library, useful for anything
-from building a ray tracer to writing a twitch game to simulating simple
-physics.
-
-Right now this is *NOT* in a useful state -- it is being posted to share
-the hacking, not because it's ready.
-
-Did I mention it's not ready?  Oh good.
+When building this module under JVM, you may need to add something along the
+lines of "-Xms500m -Xmx2g" in the perl6-j runner if you encounter
+out-of-memory errors.
