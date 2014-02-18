@@ -3,7 +3,7 @@ use Panda::Builder;
 
 class Build is Panda::Builder {
     method build ($where) {
-        require "{$where.path.absolute.child('gen-libs.p6')}";
+        require "{$?FILE.path.absolute.parent.child('gen-libs.p6')}";
     }
 }
 
