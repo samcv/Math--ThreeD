@@ -2,7 +2,7 @@
     "name" : "Math::ThreeD",
     "version" : "*",
     "description" : "A simple 3D library for Perl 6.",
-    "author" : "japhb",
+    "author" : "raydiak",
     "depends" : [ ],
-    "source-url" : "git://github.com/japhb/Math--ThreeD.git"
+    "source-url" : "git://github.com/raydiak/Math--ThreeD.git"
 }
