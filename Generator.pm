@@ -258,4 +258,4 @@ class Math::ThreeD::Library {
 
 sub op (|a) is export { Math::ThreeD::Operation.new(|a) }
 
-# vim: set expandtab:ts=4:sw=4
+# vim: set ft=perl6:expandtab:ts=4:sw=4
