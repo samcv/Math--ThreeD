@@ -8,7 +8,7 @@ use Generator;
 Math::ThreeD::Library.new(
     name => 'Mat44',
     constructor => 'mat44',
-    elems => my $elems = 16,
+    dims => [4, 4],
     intro =>
 q[method at_pos ($i) is rw {
     self.Array::at_pos($_  ),
@@ -118,12 +118,6 @@ sub mat44-rot-z(Numeric:D $a) is export {
             function => 'mod',
             mutator => 'modulus',
             args => [[ <obj> ],[ <num> ]],
-        ),
-
-        op( operator => '!',
-            postfix => True,
-            # not correct or optimal; just testing postfix
-            expressions => [ (^$elems).map: {"([*] 1..\$a[$_])"} ],
         ),
 
         op( function => 'dump',

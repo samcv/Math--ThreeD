@@ -8,7 +8,7 @@ use Generator;
 Math::ThreeD::Library.new(
     name => 'Vec3',
     constructor => 'vec3',
-    elems => 3,
+    dims => [3],
     use => 'Math::ThreeD::Mat44',
     ops => (
 

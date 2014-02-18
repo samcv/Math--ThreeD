@@ -140,7 +140,9 @@ class Math::ThreeD::Operation {
             } else {
                 my $r = $result eq 'rw' ?? '$r' !! $argfirst ?? '$b' !! '$a';
                 my $i = 0;
-                $return ~= "({(^$lib.elems).map({"$r\[$_]"}).join(',')}) =\n$expression;\n$r;";
+                $return ~= '(';
+                $return ~= $lib.indices.map({ "$r$_" }).join(',');
+                $return ~= ") =\n$expression;\n$r;";
             }
         } elsif $.return eq 'num' {
             if $result eq 'new' {
@@ -191,16 +193,16 @@ class Math::ThreeD::Operation {
         
         if @args {
             my $map_expr = $argfirst ??
-                {     "\$a $op \$b[$_]" } !!
-                { "\$a[$_] $op \$b"     };
-            @expressions = (^$lib.elems).map($map_expr);
+                {     "\$a $op \$b$_" } !!
+                { "\$a$_ $op \$b"     };
+            @expressions = $lib.indices.map: $map_expr;
 
             if @args[0] eq 'obj' {
-                my $i = 0;
-                @expressions .= map: { "$_\[{$i++}]" };
+                my @i = $lib.indices;
+                @expressions .= map: { "$_@i.shift()" };
             }
         } else {
-            @expressions = (^$lib.elems).map({"$op \$a[$_]"});
+            @expressions = $lib.indices.map: {"$op \$a$_"};
         }
 
         @expressions;
@@ -209,7 +211,7 @@ class Math::ThreeD::Operation {
 
 class Math::ThreeD::Library {
     has Str:D $.name;
-    has Numeric:D $.elems;
+    has Numeric:D @.dims;
     has Str $.intro;
     has Str $.constructor;
     has Math::ThreeD::Operation:D @.ops;
@@ -246,6 +248,11 @@ class Math::ThreeD::Library {
         my $out = $filename.path.open(:w);
         $out.print: self.build;
         $out.close;
+    }
+
+    method indices () {
+        my @i = [X](self.dims.map({ [^$_] })).tree;
+        @i.map: { .map({"[$_]"}).join: '' };
     }
 }
 
