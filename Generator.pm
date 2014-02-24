@@ -72,7 +72,7 @@ class Math::ThreeD::Operation {
                     when 'obj' { $lib.name }
                     default { $_ }
                 }();
-                @params.push: "$argtype:D \$";
+                @params.push: "$argtype\:D \$";
             }
         }
 
