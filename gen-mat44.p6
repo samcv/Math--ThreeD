@@ -10,25 +10,7 @@ Math::ThreeD::Library.new(
     constructor => 'mat44',
     dims => [4, 4],
     intro =>
-q[sub mat44-zero() is export {
-    Mat44.new(
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0,
-    )
-}
-
-sub mat44-ident() is export {
-    Mat44.new(
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        0, 0, 0, 1,
-    )
-}
-
-sub mat44-trans($x, $y, $z) is export {
+q[sub mat44-trans($x, $y, $z) is export {
     Mat44.new(
         1, 0, 0, $x,
         0, 1, 0, $y,
