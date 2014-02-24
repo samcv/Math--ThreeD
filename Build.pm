@@ -7,4 +7,4 @@ class Build is Panda::Builder {
     }
 }
 
-# vim: set ft=perl6:expandtab:ts=4:sw=4
+# vim: set expandtab:ft=perl6:ts=4:sw=4
