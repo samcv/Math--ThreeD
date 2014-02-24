@@ -234,12 +234,12 @@ class Math::ThreeD::Library {
             $build ~= "sub $_ (|a) is export \{ {$.name}.new(|a) }\n\n";
         }
 
-        $build ~= "$.name.lc()-zero () is export \{ $.name\.new({ (0 xx [*] @.dims).join: ',' }) };\n\n";
+        $build ~= "multi sub $.name.lc()-zero () is export \{ $.name\.new({ (0 xx [*] @.dims).join: ',' }) };\n\n";
 
         if @.dims == 1 {
-            $build ~= "$.name.lc()-ident () is export \{ $.name\.new({ (1 xx @.dims[0]).join: ',' }) };\n\n";
+            $build ~= "multi sub $.name.lc()-ident () is export \{ $.name\.new({ (1 xx @.dims[0]).join: ',' }) };\n\n";
         } elsif @.dims == 2 {
-            $build ~= "$.name.lc()-ident () is export \{ $.name\.new(";
+            $build ~= "multi sub $.name.lc()-ident () is export \{ $.name\.new(";
             $build ~= (^(@.dims[0]) X ^(@.dims[1])).tree.map({ $_[0] == $_[1] ?? 1 !! 0 }).join(',');
             $build ~= ") };\n\n";
             
