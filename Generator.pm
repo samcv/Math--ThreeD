@@ -233,6 +233,19 @@ class Math::ThreeD::Library {
             $build ~= "sub $_ (|a) is export \{ {$.name}.new(|a) }\n\n";
         }
 
+        if @.dims == 2 {
+            my $columns = @.dims[1];
+            $build ~= 'method at_pos ($i) is rw {' ~ "\n";
+            my @expressions;
+            for ^$columns {
+                my $offset = $_ ?? "+$_" !! "  ";
+                @expressions.push: "self.Array::at_pos(\$_$offset)";
+            }
+            $build ~= @expressions.join(",\n").indent(4) ~ "\n";
+            $build ~= "given \$i*$columns;".indent(8);
+            $build ~= "\n}\n\n";
+        }
+
         if @.ops {
             for @.ops {
                 $build ~= .build(lib => self);

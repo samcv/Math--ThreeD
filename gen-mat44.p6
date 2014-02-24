@@ -10,15 +10,7 @@ Math::ThreeD::Library.new(
     constructor => 'mat44',
     dims => [4, 4],
     intro =>
-q[method at_pos ($i) is rw {
-    self.Array::at_pos($_  ),
-    self.Array::at_pos($_+1),
-    self.Array::at_pos($_+2),
-    self.Array::at_pos($_+3)
-        given $i*4;
-}
-
-sub mat44-zero() is export {
+q[sub mat44-zero() is export {
     Mat44.new(
         0, 0, 0, 0,
         0, 0, 0, 0,
