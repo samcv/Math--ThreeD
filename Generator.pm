@@ -243,11 +243,13 @@ class Math::ThreeD::Library {
     }
 
     method write (Str:D $filename) {
+        print "Writing $filename...";
         chdir $?FILE.path.directory;
         mkpath($filename.path.parent);
         my $out = $filename.path.open(:w);
         $out.print: self.build;
         $out.close;
+        say "done";
     }
 
     method indices () {
@@ -258,4 +260,4 @@ class Math::ThreeD::Library {
 
 sub op (|a) is export { Math::ThreeD::Operation.new(|a) }
 
-# vim: set ft=perl6:expandtab:ts=4:sw=4
+# vim: set expandtab:ft=perl6:ts=4:sw=4
