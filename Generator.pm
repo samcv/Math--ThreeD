@@ -213,7 +213,7 @@ class Math::ThreeD::Library {
     has Str:D $.name;
     has Numeric:D @.dims;
     has Str $.intro;
-    has Str $.constructor;
+    has Str $.constructor = $!name.lc;
     has Math::ThreeD::Operation:D @.ops;
     has @.use;
 

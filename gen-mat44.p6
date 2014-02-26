@@ -7,7 +7,6 @@ use Generator;
 
 Math::ThreeD::Library.new(
     name => 'Mat44',
-    constructor => 'mat44',
     dims => [4, 4],
     intro =>
 q[sub mat44-trans($x, $y, $z) is export {
