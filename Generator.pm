@@ -193,8 +193,8 @@ class Math::ThreeD::Operation {
         
         if @args {
             my $map_expr = $argfirst ??
-                {     "\$a $op \$b$_" } !!
-                { "\$a$_ $op \$b"     };
+                {   "\$a $op \$b$_" } !!
+                { "\$a$_ $op \$b"   };
             @expressions = $lib.indices.map: $map_expr;
 
             if @args[0] eq 'obj' {
@@ -275,7 +275,7 @@ class Math::ThreeD::Library {
     }
 
     method indices () {
-        my @i = [X](self.dims.map({ [^$_] })).tree;
+        my @i = [X]( self.dims.map({ [^$_] }) ).tree;
         @i.map: { .map({"[$_]"}).join: '' };
     }
 }
