@@ -103,11 +103,6 @@ Math::ThreeD::Library.new(
             args => [[ <obj> ],[ <num> ]],
         ),
 
-        op( function => 'dump',
-            body => 'say $a.perl',
-            return => '',
-        ),
-
         op( function => 'inv',
             mutator => 'invert',
             intro =>

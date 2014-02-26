@@ -129,11 +129,6 @@ my $cross = $b.cross($a);],
             ],
         ),
 
-        op( function => 'dump',
-            body => 'say $a.perl',
-            return => '',
-        ),
-
         op( function => 'trans',
             mutator => 'transform',
             args => [ ['Mat44'] ],

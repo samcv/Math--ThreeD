@@ -236,6 +236,8 @@ class Math::ThreeD::Library {
         $build ~=
             qq[method perl () \{ '{$.name}.new(' ~ join(',', self.list».perl) ~ ')' }\n\n];
 
+        $build ~= 'method dump () { say self.perl }' ~ "\n\n";
+
         if $.constructor -> $_ {
             $build ~= "sub $_ (|a) is export \{ {$.name}.new(|a) }\n\n";
         }
