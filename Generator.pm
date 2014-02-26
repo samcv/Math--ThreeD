@@ -6,6 +6,7 @@ class Math::ThreeD::Operation {
     has Str $.mutator;
     has Str $.operator;
     has Bool $.postfix = False;
+    has Bool $.selfarg = True;
 
     has Positional @.args = []; # Str:D where any <num obj>
     has $.return = 'obj';
@@ -64,7 +65,8 @@ class Math::ThreeD::Operation {
             $name = $result eq 'mutator' ?? $.mutator !! $.function;
         }
 
-        my @params = "$lib.name():D \$";
+        my @params;
+        @params.push: "$lib.name():D \$" if $.selfarg;
         if @args {
             for @args {
                 my $argtype = {
@@ -75,16 +77,19 @@ class Math::ThreeD::Operation {
                 @params.push: "$argtype\:D \$";
             }
         }
+        @params.unshift: @params.splice(1,1) if $argfirst;
 
         my $params = '';
         my $var = 'a';
         my $is_method = ($routine eq 'method');
-        @params.unshift: @params.splice(1,1) if $argfirst;
+        my $selfarg = $is_method && $.selfarg;
         for @params {
-            $params ~= $is_method && $var eq 'b' ?? ' ' !! ', '
-                if $params;
+            if $params {
+                $params ~= ',' unless $var eq 'b' && $selfarg;
+                $params ~= ' ';
+            }
             $params ~= $_ ~ $var++;
-            $params ~= ':' if $is_method && $var eq 'b';
+            $params ~= ':' if $var eq 'b' && $selfarg;
         }
 
         if $.return {
@@ -95,12 +100,13 @@ class Math::ThreeD::Operation {
 
             if $result eq 'rw' {
                 if $params {
-                    $params ~= ',' unless $is_method && $var eq 'b';
+                    $params ~= ',' unless $var eq 'b' && $selfarg;
                     $params ~= ' ' if $params;
                 }
                 $params ~= "$return \$r is rw";
             }
-            $params ~= " --> $return";
+            $params ~= ' ' if $params;
+            $params ~= "--> $return";
         } else {
             #$params ~= " --> Nil";
         }

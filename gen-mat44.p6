@@ -8,55 +8,65 @@ use Generator;
 Math::ThreeD::Library.new(
     name => 'Mat44',
     dims => [4, 4],
-    intro =>
-q[sub mat44-trans($x, $y, $z) is export {
-    Mat44.new(
-        1, 0, 0, $x,
-        0, 1, 0, $y,
-        0, 0, 1, $z,
-        0, 0, 0,  1,
-    )
-}
-
-sub mat44-scale($x, $y, $z) is export {
-    Mat44.new(
-        $x,  0,  0, 0,
-         0, $y,  0, 0,
-         0,  0, $z, 0,
-         0,  0,  0, 1,
-    )
-}
-
-sub mat44-rot-x(Numeric:D $a) is export {
-    my ($sin, $cos) = sin($a), cos($a);
-    Mat44.new(
-        1,    0,     0, 0,
-        0, $cos, -$sin, 0,
-        0, $sin,  $cos, 0,
-        0,    0,     0, 1,
-    )
-}
-
-sub mat44-rot-y(Numeric:D $a) is export {
-    my ($sin, $cos) = sin($a), cos($a);
-    Mat44.new(
-        $cos, 0, -$sin, 0,
-           0, 1,     0, 0,
-        $sin, 0,  $cos, 0,
-           0, 0,     0, 1,
-    )
-}
-
-sub mat44-rot-z(Numeric:D $a) is export {
-    my ($sin, $cos) = sin($a), cos($a);
-    Mat44.new(
-        $cos, -$sin, 0, 0,
-        $sin,  $cos, 0, 0,
-           0,     0, 1, 0,
-           0,     0, 0, 1,
-    )
-}],
     ops => (
+
+        op( function => 'mat44-trans',
+            args => [[ <num num num> ]],
+            :!selfarg,
+            expressions => [ <
+                1 0 0 $a
+                0 1 0 $b
+                0 0 1 $c
+                0 0 0  1
+            > ],
+        ),
+
+        op( function => 'mat44-scale',
+            args => [[ <num num num> ]],
+            :!selfarg,
+            expressions => [ <
+                $a  0  0 0
+                 0 $b  0 0
+                 0  0 $c 0
+                 0  0  0 1
+            > ],
+        ),
+
+        op( function => 'mat44-rot-x',
+            args => [[ <num> ]],
+            :!selfarg,
+            intro => 'my ($sin, $cos) = sin($a), cos($a);',
+            expressions => [ <
+                 1    0     0 0
+                 0 $cos -$sin 0
+                 0 $sin  $cos 0
+                 0    0     0 1
+            > ],
+        ),
+
+        op( function => 'mat44-rot-y',
+            args => [[ <num> ]],
+            :!selfarg,
+            intro => 'my ($sin, $cos) = sin($a), cos($a);',
+            expressions => [ <
+                $cos 0 -$sin 0
+                   0 1     0 0
+                $sin 0  $cos 0
+                   0 0     0 1
+            > ],
+        ),
+
+        op( function => 'mat44-rot-z',
+            args => [[ <num> ]],
+            :!selfarg,
+            intro => 'my ($sin, $cos) = sin($a), cos($a);',
+            expressions => [ <
+                $cos -$sin 0 0
+                $sin  $cos 0 0
+                   0     0 1 0
+                   0     0 0 1
+            > ],
+        ),
 
         op( operator => '+',
             function => 'add',
