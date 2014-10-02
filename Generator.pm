@@ -248,7 +248,7 @@ class Math::ThreeD::Library {
             $build ~= "multi sub $.name.lc()-ident () is export \{ $.name\.new({ (1 xx @.dims[0]).join: ',' }) };\n\n";
         } elsif @.dims == 2 {
             $build ~= "multi sub $.name.lc()-ident () is export \{ $.name\.new(";
-            $build ~= (^(@.dims[0]) X ^(@.dims[1])).tree.map({ $_[0] == $_[1] ?? 1 !! 0 }).join(',');
+            $build ~= (^(@.dims[0]) X ^(@.dims[1])).map( +(* == *) ).join(',');
             $build ~= ") };\n\n";
             
             my $columns = @.dims[1];
@@ -283,8 +283,11 @@ class Math::ThreeD::Library {
     }
 
     method indices () {
-        my @i = [X]( self.dims.map({ [^$_] }) ).tree;
-        @i.map: { .map({"[$_]"}).join: '' };
+        my @return =
+            @.dims == 1 ?? (^@.dims[0]).map({"[$_]"}) !!
+            @.dims == 2 ?? (^(@.dims[0]) X ^(@.dims[1])).map({ "[$^a][$^b]" }) !!
+            die 'Only dimensions 1 and 2 are currently supported';
+        return @return;
     }
 }
 
