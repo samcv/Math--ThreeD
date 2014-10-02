@@ -2,7 +2,7 @@
 
 use v6;
 
-chdir $?FILE.path.absolute.directory;
+chdir $?FILE.path.absolute.dirname;
 
 require 'gen-vec3.p6';
 require 'gen-mat44.p6';

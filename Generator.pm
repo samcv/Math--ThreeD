@@ -274,7 +274,7 @@ class Math::ThreeD::Library {
 
     method write (Str:D $filename) {
         print "Writing $filename...";
-        chdir $?FILE.path.directory;
+        chdir $?FILE.path.dirname;
         mkpath($filename.path.parent);
         my $out = $filename.path.open(:w);
         $out.print: self.build;

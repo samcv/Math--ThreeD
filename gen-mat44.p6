@@ -2,7 +2,7 @@
 
 use v6;
 
-use lib $?FILE.path.directory;
+use lib $?FILE.path.dirname;
 use Generator;
 
 Math::ThreeD::Library.new(
