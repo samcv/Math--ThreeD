@@ -224,7 +224,7 @@ class Math::ThreeD::Library {
     has @.use;
 
     method build () {
-        my $build = "class $.name is Array;\n\n";
+        my $build = "unit class $.name is Array;\n\n";
 
         if @.use {
             $build ~= "use $_;\n" for @.use;
